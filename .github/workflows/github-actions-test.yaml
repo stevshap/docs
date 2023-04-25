@@ -12,10 +12,10 @@ name: Build and Publish Verrazzano Documentation
 on:
   # Runs on pushes targeting the active doc branches
   push:
-    branches:
-    - master
-    - release-*
-    - archive
+#    branches:
+#    - master
+#    - release-*
+#    - archive
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
