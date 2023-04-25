@@ -117,12 +117,12 @@ jobs:
     needs: build
     env:
       name: ${{ env.VERSION }}
-      url: ${{ steps.deployment.outputs.page_url }}
+#      url: ${{ steps.deployment.outputs.page_url }}
 #      VERSION: ${{ env.VERSION }}
     steps:
       - name: Deploy production to GH pages
         uses: actions/deploy-pages@v2
-        id: deployment
+#        id: deployment
 #        artifactName: ${VERSION}
 
   # Deploy docs under latest dir (if applicable)
