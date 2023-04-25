@@ -106,7 +106,7 @@ jobs:
           mkdir -p latest
           hugo --source . --destination latest --environment production
       - name: Upload latest artifacts
-        if: ${{ IS_LATEST }}
+        if: ${{ env.IS_LATEST }}
         uses: actions/upload-artifact@v3
         with:
           path: latest/**
