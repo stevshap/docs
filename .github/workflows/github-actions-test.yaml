@@ -33,7 +33,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build and deploy:
+  build_and_deploy:
     runs-on: ubuntu-latest
     env:
       HUGO_VERSION: 0.111.3
