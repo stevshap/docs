@@ -65,10 +65,12 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           path: public/**
+          name: public
       - name: Upload zip artifact
         uses: actions/upload-artifact@v3
         with:
           path: verrazzano-production-docs.zip
+          name: verrazzano-production-docs.zip
 
       # Extract branch name
       - name: Extract branch name
@@ -86,8 +88,6 @@ jobs:
 
       # Build and upload docs under ${version} dir
       - name: Build production documentation
-        env:
-          VERSION: ${{ env.VERSION }}
         run: |
           mkdir -p $VERSION
           hugo --source . --destination $VERSION --environment production
@@ -112,16 +112,21 @@ jobs:
 
       # Deploy docs under version
       - name: Deploy production to GH pages
+        id: deployment
         env:
-          name: ${{ env.VERSION }}
+          name: github-pages
           url: ${{ steps.deployment.outputs.page_url }}
         uses: actions/deploy-pages@v2
-        id: deployment
+        with:
+          artifact_name: ${{ env.VERSION }}
 
         # Deploy docs under latest (if applicable)
       - name: Deploy production to GH pages
+        id: deploy-latest
         if: ${{ env.IS_LATEST }}
         env:
           name: latest
           url: ${{ steps.deploy-latest.outputs.page_url }}
         uses: actions/deploy-pages@v2
+        with:
+          artifact_name: latest
