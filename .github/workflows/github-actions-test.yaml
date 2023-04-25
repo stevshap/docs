@@ -130,7 +130,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     env:
-      name: github-pages
+      name: latest
 #      url: ${{ steps.deploy-latest.outputs.page_url }}
 #      IS_LATEST: ${{ env.IS_LATEST }}
     steps:
@@ -138,4 +138,4 @@ jobs:
         if: ${{ env.IS_LATEST }}
         uses: actions/deploy-pages@v2
 #        id: deploy-latest
-        artifactName: latest
+#        artifactName: latest
