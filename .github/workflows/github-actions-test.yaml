@@ -85,12 +85,12 @@ jobs:
       # Extract IS_LATEST variable
       - name: Process IS_LATEST
         run: |
-          echo "IS_LATEST=$(cat .latest)" >> "$GITHUB_ENV"
+#          echo "IS_LATEST=$(<.latest)" >> "$GITHUB_ENV"
+          echo "IS_LATEST=true" >> "$GITHUB_ENV"
 
       # Build and upload docs under ${version} dir
       - name: Build production documentation
         run: |
-          echo ${{ env.IS_LATEST }}
           mkdir -p $VERSION
           hugo --source . --destination $VERSION --environment production
       - name: Upload production artifacts
@@ -106,7 +106,7 @@ jobs:
           mkdir -p latest
           hugo --source . --destination latest --environment production
       - name: Upload latest artifacts
-        if: ${{ env.IS_LATEST }}
+        if: ${{ env.IS_LATEST == 'true' }}
         uses: actions/upload-artifact@v3
         with:
           name: latest
@@ -125,7 +125,7 @@ jobs:
         # Deploy docs under latest (if applicable)
       - name: Deploy production to GH pages
         id: deploy-latest
-        if: ${{ env.IS_LATEST }}
+        if: ${{ env.IS_LATEST == 'true' }}
         env:
           name: gh-pages
           url: ${{ steps.deploy-latest.outputs.page_url }}
