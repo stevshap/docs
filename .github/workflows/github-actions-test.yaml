@@ -117,12 +117,12 @@ jobs:
     needs: build
     env:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+#      url: ${{ steps.deployment.outputs.page_url }}
       VERSION: ${{ env.VERSION }}
     steps:
       - name: Deploy production to GH pages
         uses: actions/deploy-pages@v2
-        id: deployment
+#        id: deployment
         artifactName: ${VERSION}
 
   # Deploy docs under latest dir (if applicable)
@@ -131,11 +131,11 @@ jobs:
     needs: build
     env:
       name: github-pages
-      url: ${{ steps.deploy-latest.outputs.page_url }}
+#      url: ${{ steps.deploy-latest.outputs.page_url }}
 #      IS_LATEST: ${{ env.IS_LATEST }}
     steps:
       - name: Deploy production to GH pages
         if: ${{ env.IS_LATEST }}
         uses: actions/deploy-pages@v2
-        id: deploy-latest
+#        id: deploy-latest
         artifactName: latest
