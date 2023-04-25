@@ -94,8 +94,8 @@ jobs:
       - name: Upload production artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: $VERSION
-          path: $VERSION/**
+          name: ${{ env.VERSION }}
+          path: ${{ env.VERSION }}/**
 
       # Build and upload docs under "latest" dir (if applicable)
       - name: Build latest documentation
