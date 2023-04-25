@@ -33,7 +33,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
+  build and deploy:
     runs-on: ubuntu-latest
     env:
       HUGO_VERSION: 0.111.3
@@ -89,7 +89,9 @@ jobs:
         env:
           VERSION: ${{ env.VERSION }}
         run: |
-          echo ${VERSION}
+          echo ${{ env.VERSION }}
+          echo "test"
+          echo $VERSION
           mkdir -p ${VERSION}
           hugo --source . --destination ${VERSION} --environment production
       - name: Upload production artifacts
