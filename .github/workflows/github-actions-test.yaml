@@ -99,9 +99,9 @@ jobs:
 
       # Build and upload docs under "latest" dir (if applicable)
       - name: Build latest documentation
-        if: ${{ IS_LATEST }}
-        env:
-          IS_LATEST: ${{ env.IS_LATEST }}
+        if: ${{ env.IS_LATEST }}
+#        env:
+#          IS_LATEST: ${{ env.IS_LATEST }}
         run: |
           mkdir -p latest
           hugo --source . --destination latest --environment production
@@ -132,10 +132,10 @@ jobs:
     env:
       name: github-pages
       url: ${{ steps.deploy-latest.outputs.page_url }}
-      IS_LATEST: ${{ env.IS_LATEST }}
+#      IS_LATEST: ${{ env.IS_LATEST }}
     steps:
       - name: Deploy production to GH pages
-        if: ${{ IS_LATEST }}
+        if: ${{ env.IS_LATEST }}
         uses: actions/deploy-pages@v2
         id: deploy-latest
         artifactName: latest
