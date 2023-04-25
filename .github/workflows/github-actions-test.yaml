@@ -84,8 +84,8 @@ jobs:
         run: ./scripts/branch.sh ${BRANCH}
       # Extract IS_LATEST variable
       - name: Process IS_LATEST
-        run: |
-          echo "IS_LATEST=true" >> "$GITHUB_ENV"
+        run: echo "IS_LATEST=true" >> "$GITHUB_ENV"
+      # echo "IS_LATEST=$(<.latest)" >> "$GITHUB_ENV"
 
       # Build and upload docs under ${version} dir
       - name: Build production documentation
