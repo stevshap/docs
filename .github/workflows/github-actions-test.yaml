@@ -94,6 +94,7 @@ jobs:
       - name: Upload production artifacts
         uses: actions/upload-artifact@v3
         with:
+          name: $VERSION
           path: $VERSION/**
 
       # Build and upload docs under "latest" dir (if applicable)
@@ -106,6 +107,7 @@ jobs:
         if: ${{ env.IS_LATEST }}
         uses: actions/upload-artifact@v3
         with:
+          name: latest
           path: latest/**
 
       # Deploy docs under version
