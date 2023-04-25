@@ -85,7 +85,7 @@ jobs:
       # Extract IS_LATEST variable
       - name: Process IS_LATEST
         run: |
-          echo "IS_LATEST=$(<.latest)" >> "$GITHUB_ENV"
+          echo "IS_LATEST=$(cat .latest)" >> "$GITHUB_ENV"
           echo ${{ env.IS_LATEST }}
 
       # Build and upload docs under ${version} dir
@@ -116,7 +116,7 @@ jobs:
       - name: Deploy production to GH pages
         id: deployment
         env:
-          name: github-pages
+          name: gh-pages
           url: ${{ steps.deployment.outputs.page_url }}
         uses: actions/deploy-pages@v2
         with:
@@ -127,7 +127,7 @@ jobs:
         id: deploy-latest
         if: ${{ env.IS_LATEST }}
         env:
-          name: latest
+          name: gh-pages
           url: ${{ steps.deploy-latest.outputs.page_url }}
         uses: actions/deploy-pages@v2
         with:
