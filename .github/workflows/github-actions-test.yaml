@@ -86,11 +86,11 @@ jobs:
       - name: Process IS_LATEST
         run: |
           echo "IS_LATEST=$(cat .latest)" >> "$GITHUB_ENV"
-          echo ${{ env.IS_LATEST }}
 
       # Build and upload docs under ${version} dir
       - name: Build production documentation
         run: |
+          echo ${{ env.IS_LATEST }}
           mkdir -p $VERSION
           hugo --source . --destination $VERSION --environment production
       - name: Upload production artifacts
