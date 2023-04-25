@@ -89,15 +89,12 @@ jobs:
         env:
           VERSION: ${{ env.VERSION }}
         run: |
-          echo ${{ env.VERSION }}
-          echo "test"
-          echo $VERSION
-          mkdir -p ${VERSION}
-          hugo --source . --destination ${VERSION} --environment production
+          mkdir -p $VERSION
+          hugo --source . --destination $VERSION --environment production
       - name: Upload production artifacts
         uses: actions/upload-artifact@v3
         with:
-          path: ${VERSION}/**
+          path: $VERSION/**
 
       # Build and upload docs under "latest" dir (if applicable)
       - name: Build latest documentation
