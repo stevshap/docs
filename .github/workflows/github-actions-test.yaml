@@ -111,31 +111,49 @@ jobs:
         with:
           path: latest/**
 
-  # Deploy docs under ${version} dir
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    env:
-      name: ${{ env.VERSION }}
-#      url: ${{ steps.deployment.outputs.page_url }}
-#      VERSION: ${{ env.VERSION }}
-    steps:
+      # Deploy docs under version
       - name: Deploy production to GH pages
+        env:
+          name: ${{ env.VERSION }}
+          url: ${{ steps.deployment.outputs.page_url }}
         uses: actions/deploy-pages@v2
-#        id: deployment
-#        artifactName: ${VERSION}
+        id: deployment
 
-  # Deploy docs under latest dir (if applicable)
-  deploy-latest:
-    runs-on: ubuntu-latest
-    needs: build
-    env:
-      name: latest
-#      url: ${{ steps.deploy-latest.outputs.page_url }}
-#      IS_LATEST: ${{ env.IS_LATEST }}
-    steps:
+        # Deploy docs under latest (if applicable)
       - name: Deploy production to GH pages
         if: ${{ env.IS_LATEST }}
+        env:
+          name: latest
+          url: ${{ steps.deploy-latest.outputs.page_url }}
         uses: actions/deploy-pages@v2
-#        id: deploy-latest
-#        artifactName: latest
+
+
+#  # Deploy docs under ${version} dir
+#  deploy:
+#    runs-on: ubuntu-latest
+#    needs: build
+#    env:
+#      VERSION: ${{ env.VERSION }}
+#      name: VERSION
+##      url: ${{ steps.deployment.outputs.page_url }}
+##      VERSION: ${{ env.VERSION }}
+#    steps:
+#      - name: Deploy production to GH pages
+#        uses: actions/deploy-pages@v2
+##        id: deployment
+##        artifactName: ${VERSION}
+
+#  # Deploy docs under latest dir (if applicable)
+#  deploy-latest:
+#    runs-on: ubuntu-latest
+#    needs: build
+#    env:
+#      name: latest
+##      url: ${{ steps.deploy-latest.outputs.page_url }}
+##      IS_LATEST: ${{ env.IS_LATEST }}
+#    steps:
+#      - name: Deploy production to GH pages
+#        if: ${{ env.IS_LATEST }}
+#        uses: actions/deploy-pages@v2
+##        id: deploy-latest
+##        artifactName: latest
