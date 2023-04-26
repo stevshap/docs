@@ -12,10 +12,10 @@ name: Build and Publish Verrazzano Documentation
 on:
   # Runs on pushes targeting the active doc branches
   push:
-#    branches:
-#    - master
-#    - release-*
-#    - archive
+    branches:
+    - master
+    - release-*
+    - archive
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -33,7 +33,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build_and_deploy:
+  build:
     runs-on: ubuntu-latest
     env:
       HUGO_VERSION: 0.111.3
@@ -72,61 +72,25 @@ jobs:
           path: verrazzano-production-docs.zip
           name: verrazzano-production-docs.zip
 
-      # Extract branch name
-      - name: Extract branch name
-        shell: bash
-        run: echo "BRANCH=$(echo ${GITHUB_REF#refs/heads/})" >> "$GITHUB_ENV"
-      # Extract publish branch to use (v1.x, devel, archive)
-      - name: Process branch version
-        shell: bash
-        env:
-          BRANCH: ${{ env.BRANCH }}
-        run: ./scripts/branch.sh ${BRANCH}
-      # Extract IS_LATEST variable
-      - name: Process IS_LATEST
-        run: echo "IS_LATEST=$(<.latest)" >> "$GITHUB_ENV"
-
       # Build and upload docs under ${version} dir
       - name: Build production documentation
         run: |
-          mkdir -p $VERSION
+          mkdir -p prod
           hugo --source . --destination $VERSION --environment production
       - name: Upload production artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.VERSION }}
-          path: ${{ env.VERSION }}/**
-
-      # Build and upload docs under "latest" dir (if applicable)
-      - name: Build latest documentation
-        if: ${{ env.IS_LATEST == 'true' }}
-        run: |
-          mkdir -p latest
-          hugo --source . --destination latest --environment production
-      - name: Upload latest artifacts
-        if: ${{ env.IS_LATEST == 'true' }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: latest
-          path: latest/**
-
-      # Deploy docs under version
-      - name: Deploy production to GH pages
-        id: deployment
-        env:
           name: github-pages
-          url: ${{ steps.deployment.outputs.page_url }}
-        uses: actions/deploy-pages@v2
-        with:
-          artifact_name: ${{ env.VERSION }}
+          path: prod
 
-        # Deploy docs under latest (if applicable)
-      - name: Deploy latest to GH pages
-        id: deploy-latest
-        if: ${{ env.IS_LATEST == 'true' }}
-        env:
-          name: github-pages
-          url: ${{ steps.deploy-latest.outputs.page_url }}
-        uses: actions/deploy-pages@v2
-        with:
-          artifact_name: latest
+      # Deploy docs
+        deploy:
+          env:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+          runs-on: ubuntu-latest
+          needs: build
+          steps:
+            - name: Deploy to GitHub Pages
+              id: deployment
+              uses: actions/deploy-pages@v2
