@@ -81,7 +81,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: github-pages
-          path: prod
+          path: ./prod
 
   # Deploy docs
   deploy:
