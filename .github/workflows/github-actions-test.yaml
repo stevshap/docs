@@ -53,16 +53,16 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v3
 
-#      # Build and upload docs under ${version} dir
-#      - name: Build production documentation
-#        run: |
-#          mkdir -p prod
-#          hugo --source . --destination prod --environment production
-#      - name: Upload production artifacts
-#        uses: actions/upload-pages-artifact@v1
-#        with:
-#          name: github-pages
-#          path: ./prod
+      # Build and upload docs under ${version} dir
+      - name: Build production documentation
+        run: |
+          mkdir -p prod
+          hugo --source . --destination prod --environment production
+      - name: Upload production artifacts
+        uses: actions/upload-pages-artifact@v1
+        with:
+          name: github-pages
+          path: ./prod
 
   # Deployment job
   deploy:
