@@ -53,38 +53,25 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v3
 
-      # Oracle Docs builds
-      - name: Build zip for Oracle Docs
-        run: |
-          mkdir -p public
-          cp content/en/docs/setup/private-registry/private-registry-full-distribution.md \
-          content/en/docs/setup/private-registry/private-registry.md
-          hugo --source . --destination public --environment production
-          zip -r verrazzano-production-docs.zip public
-      - name: Upload public artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          path: public/**
-          name: public
-      - name: Upload zip artifact
-        uses: actions/upload-artifact@v3
-        with:
-          path: verrazzano-production-docs.zip
-          name: verrazzano-production-docs.zip
+#      # Build and upload docs under ${version} dir
+#      - name: Build production documentation
+#        run: |
+#          mkdir -p prod
+#          hugo --source . --destination prod --environment production
+#      - name: Upload production artifacts
+#        uses: actions/upload-pages-artifact@v1
+#        with:
+#          name: github-pages
+#          path: ./prod
 
-      # Build and upload docs under ${version} dir
-      - name: Build production documentation
-        run: |
-          mkdir -p prod
-          hugo --source . --destination prod --environment production
-      - name: Upload production artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: github-pages
-          path: ./prod
+    # Deployment job
+    deploy:
+      env:
+        name: github-pages
+        url: ${{ steps.deployment.outputs.page_url }}
+      runs-on: ubuntu-latest
+      needs: build
+      steps:
       - name: Deploy to GitHub Pages
-        env:
-          name: github-pages
-          url: ${{ steps.deployment.outputs.page_url }}
         id: deployment
         uses: actions/deploy-pages@v2
