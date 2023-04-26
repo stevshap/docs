@@ -121,10 +121,10 @@ jobs:
           artifact_name: ${{ env.VERSION }}
 
         # Deploy docs under latest (if applicable)
-      - name: Deploy production to GH pages
+      - name: Deploy latest to GH pages
         id: deploy-latest
         if: ${{ env.IS_LATEST == 'true' }}
-        env:
+        environment:
           name: github-pages
           url: ${{ steps.deploy-latest.outputs.page_url }}
         uses: actions/deploy-pages@v2
