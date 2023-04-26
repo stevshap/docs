@@ -51,8 +51,8 @@ jobs:
       - name: Install Node.js dependencies
         run: npm ci
       - name: Setup Pages
+        id: pages
         uses: actions/configure-pages@v3
-
       # Build and upload docs under ${version} dir
       - name: Build production documentation
         run: |
