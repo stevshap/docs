@@ -124,7 +124,7 @@ jobs:
       - name: Deploy latest to GH pages
         id: deploy-latest
         if: ${{ env.IS_LATEST == 'true' }}
-        environment:
+        env:
           name: github-pages
           url: ${{ steps.deploy-latest.outputs.page_url }}
         uses: actions/deploy-pages@v2
